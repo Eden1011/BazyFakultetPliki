@@ -12,7 +12,7 @@ app.use(logger)
 
 // Use routes:
 const productRoutes = require("./src/routes/productRoutes.js")
-app.use("/products", productRoutes)
+app.use("/api/products", productRoutes)
 
 app.get("/", (req, res) => {
   res.send(`Started express`)

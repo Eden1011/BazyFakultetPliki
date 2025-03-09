@@ -10,7 +10,7 @@ let products = [
     imageUrl: "https://example.com/macbook.jpg",
     isAvailable: true,
     createdAt: "2023-01-15T14:30:00Z"
-  }
+  },
 ]
 
 module.exports = {
