@@ -26,10 +26,9 @@ const init = async () => {
       for (const product of products) {
         await db.run(
           `INSERT INTO products 
-          (id, name, category, description, price, stock_count, brand, image_url, is_available, created_at) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          (name, category, description, price, stock_count, brand, image_url, is_available, created_at) 
+          VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
-            product.id,
             product.name,
             product.category,
             product.description,

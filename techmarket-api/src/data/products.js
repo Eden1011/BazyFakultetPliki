@@ -1,7 +1,6 @@
 let products = [
   {
-    id: 1,
-    name: "MacBook Pro 16\"",
+    name: "MacBook Pro 16",
     category: "Laptopy",
     description: "Laptop Apple z procesorem M1 Pro, 16GB RAM, 512GB SSD",
     price: 9999.99,

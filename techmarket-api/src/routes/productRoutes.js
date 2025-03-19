@@ -4,53 +4,34 @@ const controller = require("../controllers/productController.js");
 
 router.get("/", async (req, res) => {
   try {
-    const options = {
-      sort: req.query.sort,
-      available: req.query.available !== undefined ? req.query.available === 'true' : undefined
-    };
-
-    const products = await controller.getProducts(options);
+    const products = await controller.getProducts(req.query);
     res.send({ "message": products });
   } catch (error) {
     console.error("Error fetching products:", error.message);
-    res.status(500).send({ "message": "Internal server error" });
+    res.status(500).send({ "message": "Internal server error", "error": error.message });
   }
 });
 
 router.get("/:id", async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
-    const products = await controller.searchProduct(id);
+    const products = await controller.searchProduct(req.params.id);
     res.send({ "message": products });
   } catch (error) {
-    console.error(`Error fetching product with id ${req.params.id}:`, error);
-    res.status(404).send({ "message": "Not found product" })
+    console.error(`Error fetching product with id ${req.params.id}:`, error.message);
+    res.status(404).send({
+      "message": "Not found product", "error": error.message
+    });
   }
 });
 
 router.post("/", async (req, res) => {
   try {
-    const { name, category, description, price, stockCount, brand, imageUrl, isAvailable } = req.body;
-
-    if (!name || !category || !price) {
-      return res.status(400).send({ "message": "Name, category and price are required" });
-    }
-
-    const updatedProducts = await controller.addProduct(
-      name,
-      category,
-      description,
-      price,
-      stockCount,
-      brand,
-      imageUrl,
-      isAvailable
-    );
-
+    const updatedProducts = await controller.addProduct(req.body);
     res.status(201).send({ "message": "Product added", "products": updatedProducts });
   } catch (error) {
     console.error("Error adding product:", error.message);
-    res.status(500).send({ "message": "Internal server error" });
+    const statusCode = error.message.includes("required") ? 400 : 500;
+    res.status(statusCode).send({ "message": 'Error adding product', "error": error.message });
   }
 });
 
@@ -60,29 +41,19 @@ router.delete("/:id", async (req, res) => {
     res.send({ "message": "Product removed", "products": updatedProducts });
   } catch (error) {
     console.error(`Error removing product with id ${req.params.id}:`, error.message);
-    res.status(404).send({ "message": "Not found" });
+    res.status(404).send({ "message": "Not found", "error": error.message });
   }
 });
 
 router.patch("/:id", async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
     const { attr, value } = req.body;
-
-    if (!attr || value === undefined) {
-      return res.status(400).send({ "message": "Attribute name and value are required" });
-    }
-
-    const result = await controller.changeProduct(id, attr, value);
-
-    if (!result) {
-      return res.status(400).send({ "message": "Cannot change product ID or product not found" });
-    }
-
+    const result = await controller.changeProduct(req.params.id, attr, value);
     res.send({ "message": "Product updated", "product": result[1] });
   } catch (error) {
     console.error(`Error updating product with id ${req.params.id}:`, error.message);
-    res.status(500).send({ "message": "Internal server error" });
+    const statusCode = error.message.includes("required") ? 400 : 500;
+    res.status(statusCode).send({ "message": "Error encountered when updating product attributes", "error": error.message });
   }
 });
 
