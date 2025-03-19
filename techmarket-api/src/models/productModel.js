@@ -1,7 +1,6 @@
 const { query, get, run } = require('../config/db');
 const { encrypt, decrypt } = require('../config/encryption');
 
-// Product functions
 const dbSearchProduct = async (id) => {
   try {
     const result = await query('SELECT * FROM products WHERE id = ?', [id]);
@@ -92,19 +91,13 @@ const dbChangeProduct = async (id, attr, value) => {
   }
 };
 
-// User functions
 const dbAddUser = async (username, email, password, firstName, lastName) => {
   try {
-    // Get the encryption key from environment variable
     const encryptionKey = process.env.ENCRYPTION_KEY;
     if (!encryptionKey) {
       throw new Error('Encryption key not found in environment variables');
     }
-
-    // Encrypt the password
     const passwordHash = encrypt(password, encryptionKey);
-
-    // Insert user into database
     await run(
       `INSERT INTO users (username, email, password_hash, first_name, last_name) 
        VALUES (?, ?, ?, ?, ?)`,
@@ -119,24 +112,15 @@ const dbAddUser = async (username, email, password, firstName, lastName) => {
 
 const dbUserLogin = async (username, password) => {
   try {
-    // Get the encryption key from environment variable
     const encryptionKey = process.env.ENCRYPTION_KEY;
     if (!encryptionKey) {
       throw new Error('Encryption key not found in environment variables');
     }
-
-    // Find user by username
     const user = await get('SELECT * FROM users WHERE username = ? OR email = ?', [username, username]);
-
-    // If user not found, return false
     if (!user) {
       return false;
     }
-
-    // Decrypt the stored password hash
     const decryptedPassword = decrypt(user.password_hash, encryptionKey);
-
-    // Compare with provided password
     return decryptedPassword === password;
   } catch (error) {
     console.error('Login error:', error.message);
@@ -178,7 +162,6 @@ const dbRemoveUser = async (id) => {
   }
 };
 
-// Category functions
 const dbGetProductCategory = async (productId) => {
   try {
     const result = await get(
@@ -219,7 +202,6 @@ const dbAddCategory = async (name, description) => {
   }
 };
 
-// Review functions
 const dbGetReviews = async () => {
   try {
     return await query(`
@@ -236,7 +218,6 @@ const dbGetReviews = async () => {
 
 const dbGetProductReviews = async (productId) => {
   try {
-    // First check if product exists
     const product = await get('SELECT * FROM products WHERE id = ?', [productId]);
     if (!product) {
       throw new Error(`Product with id ${productId} not found`);
@@ -273,24 +254,17 @@ const dbGetReview = async (id) => {
 
 const dbAddReview = async (productId, userId, rating, comment) => {
   try {
-    // Check if product exists
     const product = await get('SELECT * FROM products WHERE id = ?', [productId]);
     if (!product) {
       throw new Error(`Cannot add review: Product with id ${productId} not found`);
     }
-
-    // Check if user exists
     const user = await get('SELECT id FROM users WHERE id = ?', [userId]);
     if (!user) {
       throw new Error(`Cannot add review: User with id ${userId} not found`);
     }
-
-    // Validate rating
     if (rating < 1 || rating > 5) {
       throw new Error('Rating must be between 1 and 5');
     }
-
-    // Add review
     await run(
       `INSERT INTO reviews (product_id, user_id, rating, comment)
        VALUES (?, ?, ?, ?)`,
@@ -323,26 +297,19 @@ const dbRemoveReview = async (id) => {
 };
 
 module.exports = {
-  // Product functions
   dbSearchProduct,
   dbAddProduct,
   dbRemoveProduct,
   dbChangeProduct,
   dbGetProducts,
-
-  // User functions
   dbAddUser,
   dbSearchUser,
   dbGetUsers,
   dbRemoveUser,
   dbUserLogin,
-
-  // Category functions
   dbGetProductCategory,
   dbGetCategories,
   dbAddCategory,
-
-  // Review functions
   dbGetReviews,
   dbGetProductReviews,
   dbGetReview,

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const controller = require("../controllers/productController.js");
 
-// Get all categories
 router.get("/", async (req, res) => {
   try {
     const categories = await controller.getCategories();
@@ -12,8 +11,6 @@ router.get("/", async (req, res) => {
     res.status(500).send({ "message": "Internal server error", "error": error.message });
   }
 });
-
-// Get category by product ID
 router.get("/product/:id", async (req, res) => {
   try {
     const category = await controller.getProductCategory(req.params.id);
@@ -23,8 +20,6 @@ router.get("/product/:id", async (req, res) => {
     res.status(404).send({ "message": "Category not found", "error": error.message });
   }
 });
-
-// Create new category
 router.post("/", async (req, res) => {
   try {
     const newCategory = await controller.addCategory(req.body);

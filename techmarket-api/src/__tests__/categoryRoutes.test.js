@@ -2,7 +2,6 @@ const request = require('supertest');
 const { app } = require('../../server');
 const productController = require('../controllers/productController');
 
-// Mock the controller methods
 jest.mock('../controllers/productController');
 
 describe('Category Routes', () => {
@@ -10,7 +9,6 @@ describe('Category Routes', () => {
     jest.clearAllMocks();
   });
 
-  // GET /api/categories
   describe('GET /api/categories', () => {
     it('should return all categories', async () => {
       const mockCategories = [
@@ -37,7 +35,6 @@ describe('Category Routes', () => {
     });
   });
 
-  // GET /api/categories/product/:id
   describe('GET /api/categories/product/:id', () => {
     it('should return category for a specific product', async () => {
       const mockCategory = { id: 1, name: 'Electronics', description: 'Electronic devices' };
@@ -61,7 +58,6 @@ describe('Category Routes', () => {
     });
   });
 
-  // POST /api/categories
   describe('POST /api/categories', () => {
     it('should create a new category', async () => {
       const newCategory = {

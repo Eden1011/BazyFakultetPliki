@@ -2,7 +2,6 @@ const request = require('supertest');
 const { app } = require('../../server');
 const productController = require('../controllers/productController');
 
-// Mock the controller methods
 jest.mock('../controllers/productController');
 
 describe('User Routes', () => {
@@ -10,7 +9,6 @@ describe('User Routes', () => {
     jest.clearAllMocks();
   });
 
-  // GET /api/users
   describe('GET /api/users', () => {
     it('should return all users', async () => {
       const mockUsers = [
@@ -37,7 +35,6 @@ describe('User Routes', () => {
     });
   });
 
-  // GET /api/users/:id
   describe('GET /api/users/:id', () => {
     it('should return a specific user', async () => {
       const mockUser = { id: 1, username: 'user1', email: 'user1@example.com' };
@@ -61,7 +58,6 @@ describe('User Routes', () => {
     });
   });
 
-  // POST /api/users
   describe('POST /api/users', () => {
     it('should create a new user', async () => {
       const newUser = {
@@ -108,7 +104,6 @@ describe('User Routes', () => {
     });
   });
 
-  // DELETE /api/users/:id
   describe('DELETE /api/users/:id', () => {
     it('should delete a user', async () => {
       const mockUsers = [{ id: 2, username: 'user2' }];
@@ -133,7 +128,6 @@ describe('User Routes', () => {
     });
   });
 
-  // POST /api/users/login
   describe('POST /api/users/login', () => {
     it('should login a user with valid credentials', async () => {
       const loginData = {

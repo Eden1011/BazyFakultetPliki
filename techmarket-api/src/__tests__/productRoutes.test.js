@@ -2,7 +2,6 @@ const request = require('supertest');
 const { app } = require('../../server');
 const productController = require('../controllers/productController');
 
-// Mock the controller methods
 jest.mock('../controllers/productController');
 
 describe('Product Routes', () => {
@@ -10,7 +9,6 @@ describe('Product Routes', () => {
     jest.clearAllMocks();
   });
 
-  // GET /api/products
   describe('GET /api/products', () => {
     it('should return all products', async () => {
       const mockProducts = [
@@ -38,7 +36,6 @@ describe('Product Routes', () => {
     });
   });
 
-  // GET /api/products/:id
   describe('GET /api/products/:id', () => {
     it('should return a specific product', async () => {
       const mockProduct = { id: 1, name: 'Product 1', price: 10.99 };
@@ -62,7 +59,6 @@ describe('Product Routes', () => {
     });
   });
 
-  // POST /api/products
   describe('POST /api/products', () => {
     it('should create a new product', async () => {
       const newProduct = {
@@ -109,7 +105,6 @@ describe('Product Routes', () => {
     });
   });
 
-  // DELETE /api/products/:id
   describe('DELETE /api/products/:id', () => {
     it('should delete a product', async () => {
       const mockProducts = [{ id: 2, name: 'Product 2' }];
@@ -134,7 +129,6 @@ describe('Product Routes', () => {
     });
   });
 
-  // PATCH /api/products/:id
   describe('PATCH /api/products/:id', () => {
     it('should update a product attribute', async () => {
       const updateData = {

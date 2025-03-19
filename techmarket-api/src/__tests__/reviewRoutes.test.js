@@ -2,7 +2,6 @@ const request = require('supertest');
 const { app } = require('../../server');
 const productController = require('../controllers/productController');
 
-// Mock the controller methods
 jest.mock('../controllers/productController');
 
 describe('Review Routes', () => {
@@ -10,7 +9,6 @@ describe('Review Routes', () => {
     jest.clearAllMocks();
   });
 
-  // GET /api/reviews
   describe('GET /api/reviews', () => {
     it('should return all reviews', async () => {
       const mockReviews = [
@@ -37,7 +35,6 @@ describe('Review Routes', () => {
     });
   });
 
-  // GET /api/reviews/:id
   describe('GET /api/reviews/:id', () => {
     it('should return a specific review', async () => {
       const mockReview = {
@@ -69,7 +66,6 @@ describe('Review Routes', () => {
     });
   });
 
-  // GET /api/reviews/product/:id
   describe('GET /api/reviews/product/:id', () => {
     it('should return reviews for a specific product', async () => {
       const mockReviews = [
@@ -96,7 +92,6 @@ describe('Review Routes', () => {
     });
   });
 
-  // POST /api/reviews
   describe('POST /api/reviews', () => {
     it('should create a new review', async () => {
       const newReview = {
@@ -163,7 +158,6 @@ describe('Review Routes', () => {
     });
   });
 
-  // DELETE /api/reviews/:id
   describe('DELETE /api/reviews/:id', () => {
     it('should delete a review', async () => {
       const mockReviews = [

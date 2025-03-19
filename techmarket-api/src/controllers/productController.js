@@ -19,7 +19,6 @@ const {
   dbRemoveReview
 } = require("../models/productModel.js");
 
-// Validation helpers
 function isValidURL(url) {
   try {
     new URL(url);
@@ -49,7 +48,6 @@ const isValidRating = (rating) => {
   return rating;
 };
 
-// Product controller functions
 const parseProductOptions = (queryParams) => {
   return {
     sort: queryParams.sort,
@@ -81,22 +79,18 @@ async function addProduct(productData) {
     categoryId
   } = productData;
 
-  // Validate required fields
   if (!name || name.trim() === '') throw new Error("Name is required");
   if (!category || category.trim() === '') throw new Error("Category is required");
   if (price === undefined || price === null) throw new Error("Price is required");
 
-  // Validate field types
   if (typeof price !== 'number' || isNaN(price)) throw new Error("Price must be a valid number");
   if (typeof stockCount !== 'number' || isNaN(stockCount)) throw new Error("Stock count must be a valid number");
   if (typeof isAvailable !== 'boolean') throw new Error("Availability field must be a boolean");
 
-  // Validate field values
   if (price < 0) throw new Error("Product cannot have a negative price");
   if (stockCount < 0) throw new Error("Product cannot have a negative stock count");
   if (imageUrl && !isValidURL(imageUrl)) throw new Error("Invalid image URL format");
 
-  // Validate categoryId if provided
   let validCategoryId = null;
   if (categoryId !== undefined) {
     validCategoryId = isValidID(categoryId);
@@ -144,7 +138,6 @@ const changeProduct = async (id, attr, value) => {
   return result;
 };
 
-// User controller functions
 const loginUser = async (username, password) => {
   if (!username || username.trim() === '') throw new Error("Username or email is required");
   if (!password || password.trim() === '') throw new Error("Password is required");
@@ -165,12 +158,10 @@ const getUsers = async () => {
 const addUser = async (userData) => {
   const { username, email, password, firstName, lastName } = userData;
 
-  // Validate required fields
   if (!username || username.trim() === '') throw new Error("Username is required");
   if (!email || email.trim() === '') throw new Error("Email is required");
   if (!password || password.length < 8) throw new Error("Password must be at least 8 characters");
 
-  // Validate email format
   isValidEmail(email);
 
   return await dbAddUser(username, email, password, firstName || null, lastName || null);
@@ -181,7 +172,6 @@ const removeUser = async (id) => {
   return await dbRemoveUser(id);
 };
 
-// Category controller functions
 const getCategories = async () => {
   return await dbGetCategories();
 };
@@ -194,13 +184,11 @@ const getProductCategory = async (productId) => {
 const addCategory = async (categoryData) => {
   const { name, description } = categoryData;
 
-  // Validate required fields
   if (!name || name.trim() === '') throw new Error("Category name is required");
 
   return await dbAddCategory(name, description || null);
 };
 
-// Review controller functions
 const getReviews = async () => {
   return await dbGetReviews();
 };
@@ -218,12 +206,10 @@ const getReview = async (id) => {
 const addReview = async (reviewData) => {
   const { productId, userId, rating, comment } = reviewData;
 
-  // Validate required fields
   if (!productId) throw new Error("Product ID is required");
   if (!userId) throw new Error("User ID is required");
   if (!rating) throw new Error("Rating is required");
 
-  // Validate IDs and rating
   const validProductId = isValidID(productId);
   const validUserId = isValidID(userId);
   const validRating = isValidRating(rating);
@@ -237,26 +223,19 @@ const removeReview = async (id) => {
 };
 
 module.exports = {
-  // Product functions
   searchProduct,
   addProduct,
   removeProduct,
   changeProduct,
   getProducts,
-
-  // User functions
   loginUser,
   addUser,
   searchUser,
   getUsers,
   removeUser,
-
-  // Category functions
   getCategories,
   getProductCategory,
   addCategory,
-
-  // Review functions
   getReviews,
   getProductReviews,
   getReview,
