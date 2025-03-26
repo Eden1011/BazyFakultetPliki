@@ -2,7 +2,7 @@ const sqlite3 = require("sqlite3").verbose()
 const { open } = require("sqlite")
 const path = require("path")
 const dotenv = require("dotenv")
-const { category_table, product_table, users_table, reviews_table } = require("./dbtables.js")
+const { category_table, product_table, users_table, reviews_table, cart_items_table } = require("./dbtables.js")
 const { products } = require("../data/products.js")
 
 dotenv.config()
@@ -27,6 +27,7 @@ const init = async () => {
     await db.exec(product_table)
     await db.exec(users_table)
     await db.exec(reviews_table)
+    await db.exec(cart_items_table)
 
     const categories = await db.all('SELECT * FROM categories')
 

@@ -14,11 +14,13 @@ const productRoutes = require("./src/routes/productRoutes.js")
 const userRoutes = require("./src/routes/userRoutes.js")
 const categoryRoutes = require("./src/routes/categoryRoutes.js")
 const reviewRoutes = require("./src/routes/reviewRoutes.js")
+const cartRoutes = require("./src/routes/cartRoutes.js")
 
 app.use("/api/products", productRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/categories", categoryRoutes)
 app.use("/api/reviews", reviewRoutes)
+app.use("/api/cart", cartRoutes)
 
 app.get("/", (req, res) => {
   res.send(`Started express`)

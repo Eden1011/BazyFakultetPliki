@@ -17,7 +17,8 @@ const {
   dbGetReview,
   dbAddReview,
   dbRemoveReview
-} = require("../models/productModel.js");
+} = require("../models/prismaModel.js");
+
 
 function isValidURL(url) {
   try {
